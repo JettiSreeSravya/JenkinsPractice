@@ -5,7 +5,7 @@ pipeline {
     tools {
         // Ensure this matches the Maven name configured in your Jenkins -> Global Tool Configuration
         // If Maven is already in your environment PATH, you can remove this 'tools' block
-        maven 'Maven' 
+        maven 'Maven3' 
     }
 
     stages {
