@@ -1,31 +1,34 @@
 pipeline {
-    agent any
+    // Runs on any available Jenkins agent
+    agent any 
+
+    tools {
+        // Ensure this matches the Maven name configured in your Jenkins -> Global Tool Configuration
+        // If Maven is already in your environment PATH, you can remove this 'tools' block
+        maven 'Maven' 
+    }
 
     stages {
-        stage('Hello') {
+        stage('Checkout') {
             steps {
-                echo 'Hello World'
+                // Automatically pulls the latest code from your GitHub repository
+                checkout scm
             }
         }
-            stage('Build') {
+        
+        stage('Build & Test') {
             steps {
-                echo 'Build Stage'
+                // Executes your tests using the surefire plugin config we set up in the pom.xml
+                // NOTE: If your Jenkins server runs on Windows, change 'sh' to 'bat'
+                sh 'mvn clean test'
             }
-            }
-            stage('Deploy') {
-            steps {
-                echo 'Deploying'
-            }
-            }
-            stage('Test') {
-            steps {
-                echo 'Testing'
-            }
-            }
-            stage('Releasing') {
-            steps {
-                echo 'Release'
-            }
+        }
+    }
+    
+    post {
+        always {
+            // This captures the TestNG/Surefire XML reports so you can view the results in the Jenkins UI
+            junit 'target/surefire-reports/*.xml'
         }
     }
 }
