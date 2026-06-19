@@ -20,7 +20,7 @@ pipeline {
             steps {
                 // Executes your tests using the surefire plugin config we set up in the pom.xml
                 // NOTE: If your Jenkins server runs on Windows, change 'sh' to 'bat'
-                sh 'mvn clean test'
+                bat 'mvn clean test'
             }
         }
     }
